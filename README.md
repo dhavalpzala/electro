@@ -10,3 +10,9 @@
 ```bash
 npm start
 ```
+## Resources
+- [Mongo DB Driver Documentation](http://mongodb.github.io/node-mongodb-native/2.0/)  
+- [Electron Docs](https://github.com/atom/electron/tree/master/docs) 
+- [VueJS Guide](http://vuejs.org/guide) 
+- [Material Design Lite Documentation](http://www.getmdl.io/) 
+    
