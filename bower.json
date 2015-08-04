@@ -1,0 +1,22 @@
+{
+  "name": "Electro",
+  "main": "index.js",
+  "version": "0.0.1",
+  "authors": [
+    "Praveen Puglia <praveenpuglia@gmail.com>"
+  ],
+  "description": "A MongoDB Administration App for Desktop based on Electron",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "material-design-icons": "~2.0.0",
+    "material-design-lite": "~1.0.2",
+    "roboto-fontface": "~0.4.3"
+  }
+}
