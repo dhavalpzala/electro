@@ -1,7 +1,7 @@
 {
   "name": "Electro",
   "version": "0.0.1",
-  "description": "A MongoDB Administration App based on Electron",
+  "description": "A MongoDB Administration App for Desktop based on Electron",
   "main": "login.js",
   "scripts": {
     "start": "electron .",
