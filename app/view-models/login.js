@@ -17,7 +17,6 @@ var loginVM = new Vue({
                 var adminDb = db.admin();
                 // List all the available databases
                 adminDb.listDatabases(function(err, dbs) {
-                  alert("Yay! Connected...Check console.");
                   console.log(dbs);
                   db.close();
                 });
