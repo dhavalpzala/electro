@@ -1,6 +1,7 @@
 var app = require('app'),
     BrowserWindow = require('browser-window');
 
+app.generalData = {};
 app.on('ready', function(){
   var mainWindow = new BrowserWindow({
     fullscreen:true,

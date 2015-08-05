@@ -1,28 +1,20 @@
 var Vue = require("vue");
-var MongoClient = require('mongodb').MongoClient;
+var database = {};
 var loginVM = new Vue({
     el : "body",
     data : {
-        host : "127.0.0.1",
-        port : "27017",
+        host : "127.0.0.1", // default Values
+        port : "27017", // default Values
         username : "",
         password : "",
         database : ""
     },
     methods : {
-        connect : function(e){
-            var url = this.getUrl();
-            MongoClient.connect(url, function(err, db) {
-                // Use the admin database for the operation
-                var adminDb = db.admin();
-                // List all the available databases
-                adminDb.listDatabases(function(err, dbs) {
-                  console.log(dbs);
-                  db.close();
-                });
-            });
+        login : function(e){
+            var url = this.getConnectionUrl();
+            databaseVM.connect(url);
         },
-        getUrl : function(){
+        getConnectionUrl : function(){
             return "mongodb://"+this.$data.host + ":"+ this.$data.port;
         }
     }
