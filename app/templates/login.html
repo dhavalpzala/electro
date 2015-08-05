@@ -1,0 +1,14 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <input type="text" name="host" v-model="host" required>
+    <input type="text" name="port" v-model="port" required>
+    <input type="text" name="username" v-model="username" placeholder="Username">
+    <input type="text" name="password" v-model="password" placeholder="Password">
+    <input type="text" name="database" v-model="database" placeholder="Database">
+    <button type="submit" v-on="click: connect">Connect</button>    
+</body>
+<script src="../view-models/login.js"></script>
+</html>

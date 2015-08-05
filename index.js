@@ -8,5 +8,5 @@ app.on('ready', function(){
     icon :"img/mviewer.png",
     title : app.getName()
   });
-  mainWindow.loadUrl("file://"+ __dirname + "/login.html");
+  mainWindow.loadUrl("file://"+ __dirname + "/app/templates/login.html");
 })

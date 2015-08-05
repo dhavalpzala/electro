@@ -1,4 +1,4 @@
-var Vue = require("./node_modules/vue/dist/vue.min.js");
+var Vue = require("vue");
 var MongoClient = require('mongodb').MongoClient;
 var loginVM = new Vue({
     el : "body",
@@ -10,13 +10,14 @@ var loginVM = new Vue({
         database : ""
     },
     methods : {
-        connect : function(){
+        connect : function(e){
             var url = this.getUrl();
             MongoClient.connect(url, function(err, db) {
                 // Use the admin database for the operation
                 var adminDb = db.admin();
                 // List all the available databases
                 adminDb.listDatabases(function(err, dbs) {
+                  alert("Yay! Connected...Check console.");
                   console.log(dbs);
                   db.close();
                 });
