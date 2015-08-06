@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/praveenpuglia/electro#readme",
   "devDependencies": {
+    "bootstrap": "^3.3.5",
     "electron-prebuilt": "^0.30.2"
   },
   "dependencies": {

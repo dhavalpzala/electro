@@ -1,34 +1,95 @@
 <html>
-<head>
-    <meta charset="UTF-8">
-    <style>
-    * {
+    <head>
+        <meta charset="UTF-8">
+        <style>
+        * {
         box-sizing:border-box;
         margin:0;
         padding:0;
-    }
-    </style>
-    <link rel="stylesheet" href="../../bower_components/flexboxgrid/dist/flexboxgrid.min.css">
-</head>
-<body>
-    <div class="row">
-        <div class="login-box col-md-4 col-md-offset-3">
-            <h1>Login to MongoDB</h1>
-            <input type="text" name="host" v-model="host" required>
-            <input type="text" name="port" v-model="port" required>
-            <input type="text" name="username" v-model="username" placeholder="Username">
-            <input type="text" name="password" v-model="password" placeholder="Password">
-            <input type="text" name="database" v-model="database" placeholder="Database">
-            <button type="submit" v-on="click: login">Connect</button> 
+        }
+        </style>
+        <link href="../../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <style type="text/css">
+        .login-container {
+        width: 30%;
+        }
+        </style>
+        <div class="container login-container" v-show="!isloggedin">
+            <h1>
+            This is login page
+            </h1>
+            <form action="#" class="form-horizontal" >
+                <div class="alert alert-danger" role="alert" v-show="loginError">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    Error in login
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control"  name="host" v-model="host" placeholder="Host" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input  type="text" class="form-control" name="port" v-model="port" placeholder="port">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control"  name="username" v-model="username" placeholder="Username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control"  name="password" v-model="password" placeholder="Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control"  name="database" v-model="database" placeholder="Database">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button type="submit"  v-on="click: login" class="btn btn-default btn-block" >Connect</button>
+                    </div>
+                </div>
+            </form>
         </div>
-
-        <div id="server-status">
-            <pre>
-                <code v-text="serverStatus"></code>
-            </pre>
+        <div class="container" v-show="isloggedin">
+            <h1>You have successfully loggedin</h1>
+            <h2>list of databases bases</h2>
+            <ul>
+                <li v-repeat="databases"
+                    v-on="click: getCollection( name ) "
+                    >
+                    {{name}}
+                </li>
+            </ul>
+            <h2>collections</h2>
+            <ul>
+                <li
+                    v-repeat="collections"
+                    v-on="click: getRecords( collectionName ) "
+                    >
+                    {{collectionName}}
+                </li>
+            </ul>
+            <h3>Records</h3>
+            <ul>
+                <li v-repeat="records" >
+                    <pre><code>{{ stringifyRecord( record ) }}</code></pre>
+                </li>
+            </ul>
+            <div id="server-status">
+                <pre>
+                    <code v-text="serverStatus"></code>
+                </pre>
+            </div>
         </div>
-    </div>   
-</body>
-<script src="../view-models/database.js"></script>
-<script src="../view-models/login.js"></script>
+    </body>
+    <script src="../view-models/database.js"></script>
+    <script src="../view-models/login.js"></script>
 </html>
