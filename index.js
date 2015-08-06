@@ -4,7 +4,7 @@ var app = require('app'),
 app.generalData = {};
 app.on('ready', function(){
   var mainWindow = new BrowserWindow({
-    fullscreen:true,
+    //fullscreen:true,
     center:true,
     icon :"img/mviewer.png",
     title : app.getName()

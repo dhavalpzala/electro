@@ -7,15 +7,30 @@ var loginVM = new Vue({
         port : "27017", // default Values
         username : "",
         password : "",
-        database : ""
+        database : "",
+        isloggedin : false,
+        loginError: false,
+        databases : [],
+        collections: [],
+        records: []
     },
     methods : {
         login : function(e){
+            e.preventDefault();
             var url = this.getConnectionUrl();
-            databaseVM.connect(url);
+            databaseVM.connect( url, this.$data );
         },
         getConnectionUrl : function(){
             return "mongodb://"+this.$data.host + ":"+ this.$data.port;
+        },
+        getCollection : function  ( name ) {
+            databaseVM.getCollection( name );   
+        },
+        getRecords : function  ( name ) {
+            databaseVM.getRecords( name );   
+        },
+        stringifyRecord: function  ( r ) {
+            return JSON.stringify( r );
         }
     }
 });
