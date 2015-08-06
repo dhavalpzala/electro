@@ -1,10 +1,14 @@
 var Vue = require("vue"),
     MongoClient = require('mongodb').MongoClient;
-    
+
 var databaseVM = new Vue({
+    el : "#server-status",
     created : function(){
         //for complex objects, use created hook to make properties non-reactive
         this.db = null;
+    },
+    data : {
+        serverStatus : null
     },
     methods : {
         connect : function(url){
@@ -32,6 +36,13 @@ var databaseVM = new Vue({
         },
         closeConnection : function(){
             this.db.close();
+        },
+        getServerStatus : function(){
+            var adminDb = this.db.admin();
+            var vm = this;
+            adminDb.serverStatus(function(err, status){
+                vm.serverStatus = JSON.stringify(status, null, '  ');
+            });
         }
     }
 });

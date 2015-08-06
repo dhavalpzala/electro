@@ -21,6 +21,12 @@
             <input type="text" name="database" v-model="database" placeholder="Database">
             <button type="submit" v-on="click: login">Connect</button> 
         </div>
+
+        <div id="server-status">
+            <pre>
+                <code v-text="serverStatus"></code>
+            </pre>
+        </div>
     </div>   
 </body>
 <script src="../view-models/database.js"></script>
