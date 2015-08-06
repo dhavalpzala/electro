@@ -7,6 +7,7 @@ var databaseVM = new Vue({
         //for complex objects, use created hook to make properties non-reactive
         this.db = null;
         this.currentDb = null;
+        this.currentCollection = null;
     },
     data: {
         serverStatus: null
@@ -43,7 +44,7 @@ var databaseVM = new Vue({
         },
         getCollection: function(name) {
             var vm = this;
-            vm.currentDb = vm.db.db(name);
+            vm.currentDb = vm.db.db( name );
             loginVM.records = [];
             vm.currentDb.collections(function(err, cols) {
                 if (err) {
@@ -61,9 +62,10 @@ var databaseVM = new Vue({
                 }
             });
         },
-        getRecords: function(name) {
+        getRecords: function(name ) {
             var vm = this;
-            vm.currentDb.collection(name).find(function(err, rec) {
+            vm.currentCollection = vm.currentDb.collection( name );
+            vm.currentCollection.find(function(err, rec) {
                 if (err) {
                     vm.showConnectionErrors(err);
                     return;
@@ -88,6 +90,70 @@ var databaseVM = new Vue({
             adminDb.serverStatus(function(err, status) {
                 vm.serverStatus = JSON.stringify(status, null, '  ');
             });
+        },
+        addDatabase : function  ( dbname, collectionName ) {
+            var vm = this;
+            var db = vm.db.db( dbname );
+            db.createCollection( collectionName, function(err, collection){
+               if (err) {
+                    vm.showConnectionErrors(err);
+                    return;
+                }
+                vm.getDatabases();
+                console.log("Created testCollection");
+                console.log(collection);
+            });
+        },
+        addCollection: function  ( collectionName ) {
+            var vm = this;
+            var dbname = vm.currentDb.databaseName;
+            vm.currentDb.createCollection( collectionName, function(err, collection){
+               if ( err ) {
+                    vm.showConnectionErrors(err);
+                    return;
+                }
+                vm.getCollection( dbname );
+                
+            });
+
+        },
+        
+        dropDatabase: function( name ) {
+            var vm = this;
+            var targetdb = vm.db.db( name );
+            
+            targetdb.dropDatabase( function  (err, result) {
+                if ( err ) {
+                    vm.showConnectionErrors(err);
+                    return;
+                }
+                vm.getDatabases( );
+            } );
+
+        },
+        dropCollection : function( name ) {
+            var vm = this;
+            var dbname = vm.currentDb.databaseName;
+            vm.currentDb.dropCollection( name, function  (err, result) {
+                if ( err ) {
+                    vm.showConnectionErrors(err);
+                    return;
+                }
+                vm.getCollection( dbname );
+            } )           
+        },
+        addRecord: function ( rec ) {
+            var vm = this;
+            var collectionName = vm.currentCollection.collectionName;
+            vm.currentCollection.insert( rec, function  ( err, count ) {
+                if ( err ) {
+                    vm.showConnectionErrors(err);
+                    return;
+                }
+                vm.getRecords( collectionName );
+
+            } )
         }
+
     }
 });

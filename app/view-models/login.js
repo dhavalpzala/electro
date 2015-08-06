@@ -11,7 +11,13 @@ var loginVM = new Vue({
         loginError: false,
         databases: [],
         collections: [],
-        records: []
+        records: [],
+        newdb: '',
+        newCollectionName: '',
+        collectioName1: '',
+        record: '',
+        currentDb: '',
+        currentCollection: ''
     },
     methods: {
         login: function(e) {
@@ -23,13 +29,38 @@ var loginVM = new Vue({
             return "mongodb://" + this.$data.host + ":" + this.$data.port;
         },
         getCollection: function(name) {
+
+            this.$data.currentDb = name;
+            this.$data.currentCollection = '';
             databaseVM.getCollection(name);
         },
         getRecords: function(name) {
+
+            this.$data.currentCollection = name;
             databaseVM.getRecords(name);
+
         },
         stringifyRecord: function(r) {
             return JSON.stringify(r, null, "  ");
+        },
+        addDb: function(e) {
+            e.preventDefault();
+            databaseVM.addDatabase(this.$data.newdb, this.$data.newCollectionName);
+        },
+        addCollection: function(e) {
+            e.preventDefault();
+            databaseVM.addCollection(this.$data.collectioName1);
+        },
+        dropDatabase: function(name) {
+            databaseVM.dropDatabase(name);
+        },
+        dropCollection: function(name) {
+            databaseVM.dropCollection(name);
+        },
+        addRecord: function(e) {
+
+            e.preventDefault();
+            databaseVM.addRecord(JSON.parse(this.$data.record));
         }
     }
 });
