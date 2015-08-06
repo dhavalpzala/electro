@@ -9,11 +9,12 @@
         }
         </style>
         <link href="../../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+        <script type="text/javascript" href="../../node_modules/bootstrap/dist/js/bootstrap.js"  ></script>
     </head>
     <body>
         <style type="text/css">
         .login-container {
-        width: 30%;
+            width: 30%;
         }
         </style>
         <div class="container login-container" v-show="!isloggedin">
@@ -66,29 +67,85 @@
                     v-on="click: getCollection( name ) "
                     >
                     {{name}}
+                    <span v-on="click: dropDatabase( name )"> x </span>
                 </li>
             </ul>
-            <h2>collections</h2>
-            <ul>
-                <li
-                    v-repeat="collections"
-                    v-on="click: getRecords( collectionName ) "
-                    >
-                    {{collectionName}}
-                </li>
-            </ul>
-            <h3>Records</h3>
-            <ul>
-                <li v-repeat="records" >
-                    <pre><code>{{ stringifyRecord( record ) }}</code></pre>
-                </li>
-            </ul>
-            <div id="server-status">
-                <pre>
-                    <code v-text="serverStatus"></code>
-                </pre>
+            <div style="width: 50%">
+                <form action="#" v-on="submit: addDb" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control"  name="newdb" v-model="newdb" placeholder="add database"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control"  name="newCollectionName" v-model="newCollectionName" placeholder="Collection name"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-default btn-block" >Add DB</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="collection-wrapper" v-show="currentDb">
+                <h2>collections</h2>
+                <ul v-show="collections.length">
+                    <li
+                        v-repeat="collections"
+                        v-on="click: getRecords( collectionName ) "
+                        >
+                        {{collectionName}}
+                        <span v-on="click: dropCollection( collectionName )"> x </span>
+                    </li>
+                    
+                </ul>
+                <p v-show="!collections.length">
+                    NO collection found
+                </p>
+                <form action="#" v-on="submit: addCollection" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control"  name="collectioName1" v-model="collectioName1" placeholder="Collection name"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-default btn-block" >Add add</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="records-wrapper" v-show="currentCollection">
+                <h3>Records</h3>
+                <ul v-show="records.length">
+                    <li v-repeat="records" >
+                        <pre><code>{{ stringifyRecord( record ) }}</code></pre>
+                    </li>
+                </ul>
+                <p v-show="!records.length">
+                    NO collection found
+                </p>
+                <form action="#" v-on="submit: addRecord" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <textarea type="text" class="form-control"  name="record" v-model="record" placeholder="write proper json"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-default btn-block" >Add add</button>
+                        </div>
+                    </div>
+                </form>
+                <div id="server-status">
+                    <pre><code v-text="serverStatus"></code></pre>
+                </div>
             </div>
         </div>
+
+
     </body>
     <script src="../view-models/database.js"></script>
     <script src="../view-models/login.js"></script>
