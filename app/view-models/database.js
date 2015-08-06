@@ -1,9 +1,10 @@
 var Vue = require("vue"),
     MongoClient = require('mongodb').MongoClient;
-var Database = null; // for now, setting it as a global object for write concern issues.
+    
 var databaseVM = new Vue({
-    data : {
-        database : null 
+    created : function(){
+        //for complex objects, use created hook to make properties non-reactive
+        this.db = null;
     },
     methods : {
         connect : function(url){
@@ -15,19 +16,22 @@ var databaseVM = new Vue({
                     return;
                 }
                 //setting up db instance
-                Database = mongoDb;
+                vm.db = mongoDb;
             });
         },
         getDatabases : function(){
             // Use the admin database for the operation
-            var adminDb = Database.admin();
+            var adminDb = this.db.admin();
             // List all the available databases
-            adminDb.listDatabases(function(err, dbs) {
-              console.log(dbs);
+            adminDb.listDatabases(function(err, databases) {
+              console.log(databases);
             });
         },
         showConnectionErrors : function(err){
             console.error("[ERROR]", err);
+        },
+        closeConnection : function(){
+            this.db.close();
         }
     }
 });
