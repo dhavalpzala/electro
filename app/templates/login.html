@@ -63,15 +63,15 @@
             <h1>You have successfully loggedin</h1>
             <h2>list of databases bases</h2>
             <ul>
-                <li v-repeat="databases"
-                    v-on="click: getCollection( name ) "
+                <li v-repeat="db in databases"
+                    v-on="click: getCollections(db) "
                     >
-                    {{name}}
-                    <span v-on="click: dropDatabase( name )"> x </span>
+                    {{db}}
+                    <span v-on="click: dropDatabase( db )"> x </span>
                 </li>
             </ul>
             <div style="width: 50%">
-                <form action="#" v-on="submit: addDb" class="form-horizontal">
+                <form action="#" v-on="submit: addDbAndCollection" class="form-horizontal">
                     <div class="form-group">
                         <div class="col-sm-12">
                             <input type="text" class="form-control"  name="newdb" v-model="newdb" placeholder="add database"/>
@@ -89,7 +89,7 @@
                     </div>
                 </form>
             </div>
-            <div class="collection-wrapper" v-show="currentDb">
+            <div class="collection-wrapper">
                 <h2>collections</h2>
                 <ul v-show="collections.length">
                     <li
@@ -102,7 +102,7 @@
                     
                 </ul>
                 <p v-show="!collections.length">
-                    NO collection found
+                    No collection found
                 </p>
                 <form action="#" v-on="submit: addCollection" class="form-horizontal">
                     <div class="form-group">
@@ -117,7 +117,7 @@
                     </div>
                 </form>
             </div>
-            <div class="records-wrapper" v-show="currentCollection">
+            <div class="records-wrapper">
                 <h3>Records</h3>
                 <ul v-show="records.length">
                     <li v-repeat="records" >
@@ -148,5 +148,6 @@
 
     </body>
     <script src="../view-models/database.js"></script>
+     <script src="../view-models/databaseAPI.js"></script>
     <script src="../view-models/login.js"></script>
 </html>

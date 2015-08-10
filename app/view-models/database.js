@@ -93,7 +93,7 @@ var databaseVM = new Vue({
         },
         addDatabase : function  ( dbname, collectionName ) {
             var vm = this;
-            var db = vm.db.db( dbname );
+            var db = vm.db;
             db.createCollection( collectionName, function(err, collection){
                if (err) {
                     vm.showConnectionErrors(err);

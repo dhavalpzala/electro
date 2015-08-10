@@ -1,4 +1,5 @@
 var Vue = require("vue");
+var dbClient = new Database();
 var loginVM = new Vue({
     el: "body",
     data: {
@@ -22,45 +23,75 @@ var loginVM = new Vue({
     methods: {
         login: function(e) {
             e.preventDefault();
-            var url = this.getConnectionUrl();
-            databaseVM.connect(url, this.$data);
+            var url = this.getConnectionUrl(),
+                vm = this;
+            //databaseVM.connect(url, this.$data);
+            dbClient.connect(url).then(function(){
+                vm.isloggedin = true;
+                vm.getDatabases();
+            });
         },
         getConnectionUrl: function() {
             return "mongodb://" + this.$data.host + ":" + this.$data.port;
         },
-        getCollection: function(name) {
-
-            this.$data.currentDb = name;
-            this.$data.currentCollection = '';
-            databaseVM.getCollection(name);
+        getDatabases: function(){
+            var vm = this;
+            dbClient.getDatabases().then(function(dbs){
+                vm.databases = dbs;
+            });
         },
-        getRecords: function(name) {
-
-            this.$data.currentCollection = name;
-            databaseVM.getRecords(name);
-
+        getCollections: function(dbName) {
+            // this.$data.currentDb = name;
+            // this.$data.currentCollection = '';
+            // databaseVM.getCollection(name);
+            var vm = this;
+            dbClient.useDatabase(dbName);
+            dbClient.getCollections().then(function(collections){
+                vm.collections = collections;
+            });
+        },
+        useDatabase: function(dbName){
+            dbClient.useDatabase(dbName);
+        },
+        getRecords: function(collectionName) {
+            // this.$data.currentCollection = name;
+            // databaseVM.getRecords(name);
+            var vm = this;
+            dbClient.getRecords(collectionName).then(function(records){
+                vm.records = records;
+            });
         },
         stringifyRecord: function(r) {
             return JSON.stringify(r, null, "  ");
         },
         addDb: function(e) {
             e.preventDefault();
-            databaseVM.addDatabase(this.$data.newdb, this.$data.newCollectionName);
+            //databaseVM.addDatabase(this.$data.newdb, this.$data.newCollectionName);
+            dbClient.addDatabase(this.$data.newdb);
         },
         addCollection: function(e) {
             e.preventDefault();
-            databaseVM.addCollection(this.$data.collectioName1);
+            dbClient.addDatabase(this.$data.newCollectionName);
+            //databaseVM.addCollection(this.$data.collectioName1);
+        },
+        addDbAndCollection: function(e){
+             e.preventDefault();
+            var vm = this;
+            vm.addDb(e);
+            vm.useDatabase(this.$data.newdb);
+            vm.addCollection(e);
         },
         dropDatabase: function(name) {
-            databaseVM.dropDatabase(name);
+            dbClient.dropDatabase(name);
+            this.getDatabases();
         },
         dropCollection: function(name) {
-            databaseVM.dropCollection(name);
+            dbClient.dropCollection(name);
+            this.getCollections();
         },
         addRecord: function(e) {
-
             e.preventDefault();
-            databaseVM.addRecord(JSON.parse(this.$data.record));
+            dbClient.addRecord(JSON.parse(this.$data.record));
         }
     }
 });
